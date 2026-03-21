@@ -56,4 +56,5 @@ def create_table() -> None:
     if not __engine:
         create_engine()
 
+    import models.__all_models # pyright: ignore
     ModelBase.metadata.create_all(__engine)
