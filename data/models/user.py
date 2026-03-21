@@ -21,7 +21,7 @@ class User(ModelBase):
         sa.Integer, sa.ForeignKey("sectors.id")
     )
 
-    sector: orm.Mapped[list[Sector]] = orm.relationship(
+    sector: orm.Mapped[Sector] = orm.relationship(
         "Sector", lazy="joined"
     )
 

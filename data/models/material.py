@@ -24,7 +24,7 @@ class Material(ModelBase):
         sa.Integer, sa.ForeignKey("locations.id")
     )
 
-    location: orm.Mapped[list[Location]] = orm.relationship(
+    location: orm.Mapped[Location] = orm.relationship(
         "Location", lazy="joined"
     )
 

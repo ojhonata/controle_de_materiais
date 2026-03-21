@@ -4,7 +4,7 @@ from sqlalchemy import orm
 from data.models.model_base import ModelBase
 
 
-class Shef(ModelBase):
+class Shelf(ModelBase):
     __tablename__: str = "shelves"
 
     id: orm.Mapped[int] = orm.mapped_column(

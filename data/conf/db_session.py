@@ -3,7 +3,7 @@ from pathlib import Path
 
 import sqlalchemy as sa
 from dotenv import load_dotenv
-from sqlalchemy.future.engine import Engine
+from sqlalchemy.engine import Engine
 from sqlalchemy.orm import Session, sessionmaker
 
 from data.models.model_base import ModelBase
@@ -29,6 +29,7 @@ def create_engine(sqlite: bool = False) -> Engine:
         )
     else:
         conn_str = os.getenv("DATABASE_URL")
+        print(f"url postgresql: {conn_str}")
         if conn_str is None:
             raise ValueError("DATABASE_URL")
         __engine = sa.create_engine(url=conn_str, echo=False)
@@ -56,5 +57,5 @@ def create_table() -> None:
     if not __engine:
         create_engine()
 
-    import models.__all_models # pyright: ignore
+    import data.models.__all_models # pyright: ignore
     ModelBase.metadata.create_all(__engine)

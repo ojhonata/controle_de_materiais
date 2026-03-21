@@ -2,7 +2,7 @@ import sqlalchemy as sa
 from sqlalchemy import ForeignKey, orm
 
 from data.models.model_base import ModelBase
-from data.models.shelf import Shef
+from data.models.shelf import Shelf
 
 
 class Location(ModelBase):
@@ -17,6 +17,6 @@ class Location(ModelBase):
         sa.Integer, ForeignKey("shelves.id")
     )
 
-    shelf: orm.Mapped[list[Shef]] = orm.relationship(
+    shelf: orm.Mapped[list[Shelf]] = orm.relationship(
         "Shelf", lazy="joined"
     )
