@@ -6,3 +6,5 @@ from data.models.sector import Sector
 from data.models.shelf import Shelf
 from data.models.type import Type
 from data.models.user import User
+from data.models.inventory_count import InventoryCount
+from data.models.inventory_count_item import InventoryCountItem

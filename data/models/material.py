@@ -21,7 +21,7 @@ class Material(ModelBase):
     quantity: orm.Mapped[int] = orm.mapped_column(sa.Integer, nullable=False)
 
     location_id: orm.Mapped[int] = orm.mapped_column(
-        sa.Integer, sa.ForeignKey("locations.id")
+        sa.Integer, sa.ForeignKey("locations.id"), nullable=False
     )
 
     location: orm.Mapped[Location] = orm.relationship(

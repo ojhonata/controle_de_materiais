@@ -18,7 +18,7 @@ class User(ModelBase):
     cs: orm.Mapped[int] = orm.mapped_column(sa.Integer, unique=True, nullable=False)
 
     sector_id: orm.Mapped[int] = orm.mapped_column(
-        sa.Integer, sa.ForeignKey("sectors.id")
+        sa.Integer, sa.ForeignKey("sectors.id"), nullable=False
     )
 
     sector: orm.Mapped[Sector] = orm.relationship(

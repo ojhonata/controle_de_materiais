@@ -29,10 +29,9 @@ def create_engine(sqlite: bool = False) -> Engine:
         )
     else:
         conn_str = os.getenv("DATABASE_URL")
-        print(f"url postgresql: {conn_str}")
         if conn_str is None:
             raise ValueError("DATABASE_URL")
-        __engine = sa.create_engine(url=conn_str, echo=False)
+        __engine = sa.create_engine(url=conn_str.strip(), echo=False)
 
     return __engine
 
