@@ -8,8 +8,13 @@ class UserSchema(BaseModel):
     cs: int
     sector_id: int
 
+    class Config:
+        orm_mode = True
+
 class UserCreate(UserSchema):
-    pass
+    role: str = "user"
+
+    model_config = ConfigDict(from_attributes=True)
 
 class UserUpdate(BaseModel):
     name: str | None = None

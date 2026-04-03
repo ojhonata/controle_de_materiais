@@ -1,5 +1,5 @@
 import os
-from pathlib import Path
+from collections.abc import Generator
 
 import sqlalchemy as sa
 from dotenv import load_dotenv
@@ -10,44 +10,51 @@ from data.models.model_base import ModelBase
 
 load_dotenv()
 __engine: Engine | None = None
+__SessionLocal: sessionmaker[Session] | None = None
 
 
 # config banco de dados
 def create_engine(sqlite: bool = False) -> Engine:
     global __engine
 
-    if __engine:
+    if __engine is not None:
         return __engine
-    if sqlite:
-        arquivo_db = "db/controle_materiais.sqlite"
-        folder = Path(arquivo_db).parent
-        folder.mkdir(parents=True, exist_ok=True)
 
-        conn_str = f"sqlite:///{arquivo_db}"
-        __engine = sa.create_engine(
-            url=conn_str, echo=False, connect_args={"check_same_thread": False}
-        )
-    else:
-        conn_str = os.getenv("DATABASE_URL")
-        if conn_str is None:
-            raise ValueError("DATABASE_URL")
-        __engine = sa.create_engine(url=conn_str.strip(), echo=False)
+    conn_str = os.getenv("DATABASE_URL")
+    if conn_str is None:
+        raise ValueError("DATABASE_URL não definida no .env")
+    __engine = sa.create_engine(url=conn_str.strip(), echo=False)
 
     return __engine
 
 
 # sessão para a conexão ao banco de dados
-def create_session() -> Session:
-    global __engine
+def create_session() -> sessionmaker[Session]:
+    global __SessionLocal
 
-    if not __engine:
-        create_engine()  # para sqlite create_engine(sqlite=True)
+    if __SessionLocal is not None:
+        return __SessionLocal
 
-    __session = sessionmaker(__engine, expire_on_commit=False, class_=Session)
+    __SessionLocal = sessionmaker(
+        bind=create_engine(),
+        expire_on_commit=False,
+        class_=Session,
+    )
+    return __SessionLocal
 
-    session: Session = __session()
 
-    return session
+# Dependency para o FastAPI — use com Depends()
+def get_session() -> Generator[Session]:
+    factory = create_session()
+    session = factory()
+    try:
+        yield session
+        session.commit()
+    except Exception:
+        session.rollback()
+        raise
+    finally:
+        session.close()
 
 
 def create_table() -> None:
@@ -56,5 +63,6 @@ def create_table() -> None:
     if not __engine:
         create_engine()
 
-    import data.models.__all_models # pyright: ignore
+    import data.models.__all_models  # pyright: ignore  # noqa: F401
+
     ModelBase.metadata.create_all(__engine)
