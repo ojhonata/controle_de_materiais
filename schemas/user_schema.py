@@ -8,21 +8,19 @@ class UserSchema(BaseModel):
     cs: int
     sector_id: int
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
+
 
 class UserCreate(UserSchema):
     role: str = "user"
 
-    model_config = ConfigDict(from_attributes=True)
 
 class UserUpdate(BaseModel):
     name: str | None = None
     cs: int | None = None
     sector: int | None = None
 
+
 class UserResponse(UserSchema):
     id: UUID
     active: bool
-
-    model_config = ConfigDict(from_attributes=True) # mapeamento
