@@ -1,5 +1,5 @@
+import uuid
 from datetime import datetime
-from typing import Any
 
 import sqlalchemy as sa
 from sqlalchemy import ForeignKey, orm
@@ -13,7 +13,7 @@ from data.models.user import User
 class Movement(ModelBase):
     __tablename__: str = "movements"
 
-    id: orm.Mapped[sa.UUID[Any]] = orm.mapped_column(
+    id: orm.Mapped[uuid.UUID] = orm.mapped_column(
         sa.UUID, primary_key=True, server_default=sa.func.gen_random_uuid()
     )
 
@@ -32,7 +32,7 @@ class Movement(ModelBase):
     )
     type: orm.Mapped[Type] = orm.relationship("Type", lazy="joined")
 
-    user_id: orm.Mapped[sa.UUID[Any]] = orm.mapped_column(
+    user_id: orm.Mapped[uuid.UUID] = orm.mapped_column(
         sa.UUID, ForeignKey("users.id"), nullable=False
     )
     user: orm.Mapped[User] = orm.relationship("User", lazy="joined")

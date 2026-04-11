@@ -1,3 +1,4 @@
+import uuid
 from typing import Any
 
 import sqlalchemy as sa
@@ -11,12 +12,12 @@ from data.models.model_base import ModelBase
 class InventoryCountItem(ModelBase):
     __tablename__: str = "inventory_count_item"
 
-    id: orm.Mapped[sa.UUID[Any]] = orm.mapped_column(
+    id: orm.Mapped[uuid.UUID] = orm.mapped_column(
         sa.UUID, primary_key=True, server_default=sa.func.gen_random_uuid()
     )
 
     counted_quantity: orm.Mapped[int] = orm.mapped_column(sa.Integer, nullable=False)
-    system_counted: orm.Mapped[int] = orm.mapped_column(sa.Integer, nullable=False)
+    system_quantity: orm.Mapped[int] = orm.mapped_column(sa.Integer, nullable=False)
     difference: orm.Mapped[int] = orm.mapped_column(sa.Integer, nullable=False)
 
     material_id: orm.Mapped[sa.UUID[Any]] = orm.mapped_column(

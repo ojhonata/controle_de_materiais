@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 
-from routers import sector_routers, user_routers
+from routers import sector_routers, type_routers, user_routers
 
 app = FastAPI()
 
-app.include_router(user_routers.router, tags=["users"])
-app.include_router(sector_routers.router, tags=['sectors'])
+app.include_router(user_routers.router, tags=["Users"])
+app.include_router(sector_routers.router, tags=['Sectors'])
+app.include_router(type_routers.router, tags=["Type"])
 
 if __name__ == "__main__":
     import uvicorn

@@ -10,5 +10,6 @@ class SectorCreate(BaseModel):
     name: str
 
 
-class SectroUpdate(BaseModel):
+class SectorUpdate(BaseModel):
+    id: int
     name: str | None

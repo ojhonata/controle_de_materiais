@@ -18,7 +18,8 @@ class UserCreate(UserSchema):
 class UserUpdate(BaseModel):
     name: str | None = None
     cs: int | None = None
-    sector: int | None = None
+    sector_id: int | None = None
+    active: bool | None = None
 
 
 class UserResponse(UserSchema):

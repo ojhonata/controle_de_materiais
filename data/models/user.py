@@ -1,4 +1,4 @@
-from typing import Any
+import uuid
 
 import sqlalchemy as sa
 from sqlalchemy import orm
@@ -10,7 +10,7 @@ from data.models.sector import Sector
 class User(ModelBase):
     __tablename__: str = "users"
 
-    id: orm.Mapped[sa.UUID[Any]] = orm.mapped_column(
+    id: orm.Mapped[uuid.UUID] = orm.mapped_column(
         sa.UUID, primary_key=True, server_default=sa.func.gen_random_uuid()
     )
 
@@ -22,8 +22,6 @@ class User(ModelBase):
         sa.Integer, sa.ForeignKey("sectors.id"), nullable=False
     )
 
-    sector: orm.Mapped[Sector] = orm.relationship(
-        "Sector", lazy="joined"
-    )
+    sector: orm.Mapped[Sector] = orm.relationship("Sector", lazy="joined")
 
     active: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, server_default=sa.true())

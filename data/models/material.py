@@ -1,4 +1,4 @@
-from typing import Any
+import uuid
 
 import sqlalchemy as sa
 from sqlalchemy import orm
@@ -10,7 +10,7 @@ from data.models.model_base import ModelBase
 class Material(ModelBase):
     __tablename__: str = "materials"
 
-    id: orm.Mapped[sa.UUID[Any]] = orm.mapped_column(
+    id: orm.Mapped[uuid.UUID] = orm.mapped_column(
         sa.UUID, primary_key=True, server_default=sa.func.gen_random_uuid()
     )
     name: orm.Mapped[str] = orm.mapped_column(sa.String(255), nullable=True)
@@ -24,8 +24,6 @@ class Material(ModelBase):
         sa.Integer, sa.ForeignKey("locations.id"), nullable=False
     )
 
-    location: orm.Mapped[Location] = orm.relationship(
-        "Location", lazy="joined"
-    )
+    location: orm.Mapped[Location] = orm.relationship("Location", lazy="joined")
 
     active: orm.Mapped[bool] = orm.mapped_column(sa.Boolean, server_default=sa.true())

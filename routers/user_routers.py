@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from data.conf.db_session import get_session
-from schemas.user_schema import UserCreate, UserResponse
+from schemas.user_schema import UserCreate, UserResponse, UserUpdate
 from service import user_service
 
 router = APIRouter()
@@ -27,3 +27,11 @@ async def create_user(data: UserCreate, session: Session = Depends(get_session))
         return user_service.post_user(session, data)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+@router.put("/user_update/{cs}", response_model=UserResponse)
+async def update_user(cs: int, data: UserUpdate, session: Session = Depends(get_session)):
+    try:
+        return user_service.update_user(session, cs, data)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+

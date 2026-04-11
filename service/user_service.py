@@ -1,12 +1,16 @@
+from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from data.models.user import User
 from data.repository import user_repository
-from schemas.user_schema import UserCreate
+from schemas.user_schema import UserCreate, UserUpdate
 
 
 def get_all(session: Session) -> list[User]:
-    return user_repository.get_all_user(session)
+    try:
+        return user_repository.get_all_user(session)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 def get_user_by_cs(session: Session, cs: int) -> User:
@@ -32,4 +36,21 @@ def post_user(session: Session, data: UserCreate) -> User:
 
     if existing_user:
         raise ValueError("Usuário ja cadastrado")
-    return user_repository.creat_user(session, data)
+    return user_repository.create_user(session, data)
+
+
+def update_user(session: Session, cs: int, data: UserUpdate) -> User:
+    user = user_repository.get_by_cs(session, cs)
+
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado")
+
+    update_data = data.model_dump(exclude_unset=True)
+    for key, value in update_data.items():
+        if key == "sector":
+            user.sector_id = value
+        else:
+            setattr(user, key, value)
+    session.flush()
+    session.refresh(user)
+    return user
