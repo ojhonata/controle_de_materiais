@@ -64,5 +64,5 @@ def create_table() -> None:
         create_engine()
 
     import data.models.__all_models  # pyright: ignore  # noqa: F401
-
+    # ModelBase.metadata.drop_all(__engine)
     ModelBase.metadata.create_all(__engine)

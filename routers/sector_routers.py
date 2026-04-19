@@ -30,7 +30,9 @@ async def create_sector(data: SectorCreate, session: Session = Depends(get_sessi
 
 
 @router.put("/update_sector/{id}", response_model=SectorResponse)
-async def update_sector(id: int, data: SectorUpdate, session: Session = Depends(get_session)):
+async def update_sector(
+    id: int, data: SectorUpdate, session: Session = Depends(get_session)
+):
     try:
         return sector_service.update_sector(session, id, data)
     except ValueError as e:

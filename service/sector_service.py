@@ -33,6 +33,6 @@ def update_sector(session: Session, id: int, data: SectorUpdate) -> Sector:
         raise ValueError("Setor não encontrado")
     if data.name is not None:
         existing_sector.name = data.name
-    session.commit()
+    session.flush()
     session.refresh(existing_sector)
     return existing_sector

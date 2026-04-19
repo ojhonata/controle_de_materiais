@@ -6,6 +6,7 @@ from pydantic import BaseModel, ConfigDict
 class UserSchema(BaseModel):
     name: str
     cs: int
+    password: str
     sector_id: int
 
     model_config = ConfigDict(from_attributes=True)

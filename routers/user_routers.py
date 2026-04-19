@@ -28,10 +28,13 @@ async def create_user(data: UserCreate, session: Session = Depends(get_session))
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+
+# está atualiuzando os outros campos mesma não enviando eles
 @router.put("/user_update/{cs}", response_model=UserResponse)
-async def update_user(cs: int, data: UserUpdate, session: Session = Depends(get_session)):
+async def update_user(
+    cs: int, data: UserUpdate, session: Session = Depends(get_session)
+):
     try:
         return user_service.update_user(session, cs, data)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
-

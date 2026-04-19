@@ -14,7 +14,7 @@ def get_by_cs(session: Session, cs: int) -> User | None:
 
 
 def create_user(session: Session, data: UserCreate) -> User:
-    user = User(name=data.name, cs=data.cs, sector_id=data.sector_id)
+    user = User(name=data.name, cs=data.cs, sector_id=data.sector_id, password=data.password)
     session.add(user)
     session.commit()
     session.refresh(user)

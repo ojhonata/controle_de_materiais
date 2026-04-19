@@ -20,6 +20,7 @@ async def list_type_by_id(id: int, session: Session = Depends(get_session)):
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
+
 @router.post("/type_create/", response_model=TypeCreate)
 async def create_type(data: TypeCreate, session: Session = Depends(get_session)):
     try:

@@ -10,4 +10,4 @@ class Shelf(ModelBase):
     id: orm.Mapped[int] = orm.mapped_column(
         sa.Integer, primary_key=True, autoincrement=True
     )
-    name: orm.Mapped[str] = orm.mapped_column(sa.String(5), nullable=False)
+    name: orm.Mapped[str] = orm.mapped_column(sa.String(15), nullable=False)

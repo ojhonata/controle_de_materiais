@@ -31,6 +31,9 @@ def get_user_by_cs(session: Session, cs: int) -> User:
 def post_user(session: Session, data: UserCreate) -> User:
     existing_user = user_repository.get_by_cs(session, data.cs)
 
+    if len(str(data.password)) != 10:
+        raise ValueError("A senha precisa ter 10 caracteres")
+
     if len(str(data.cs)) != 6:
         raise ValueError("cs inválida")
 
@@ -43,7 +46,9 @@ def update_user(session: Session, cs: int, data: UserUpdate) -> User:
     user = user_repository.get_by_cs(session, cs)
 
     if not user:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado"
+        )
 
     update_data = data.model_dump(exclude_unset=True)
     for key, value in update_data.items():
